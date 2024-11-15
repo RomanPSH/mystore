@@ -1,0 +1,65 @@
+<% if @product.errors.any?%>
+  <div class="alert alert-danger">
+    <h5><%= t('common.errors') %></h5>
+    <ul>
+      <% @product.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  <div>
+<% end %>
+
+<%= form_for [:admin, @product], html: { multipart: true, class: "needs-validation" }, data: { turbo: false } do |f| %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <%= f.label :Назва, class: "form-label" %>
+          <%= f.text_field :title, class: "form-control", placeholder: "Введіть назву товару" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Бренд, class: "form-label" %>
+          <%= f.text_field :brand, class: "form-control", placeholder: "Введіть бренд" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Тип_двигуна, class: "form-label" %>
+          <%= f.text_field :engine_type, class: "form-control", placeholder: "Введіть тип двигуна" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Колір, class: "form-label" %>
+          <%= f.text_field :color, class: "form-control", placeholder: "Введіть колір" %>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <%= f.label :Опис, class: "form-label" %>
+          <%= f.text_area :description, class: "form-control", placeholder: "Введіть опис товару" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Тип_машини, class: "form-label" %>
+          <%= f.text_field :product_type, class: "form-control", placeholder: "Введіть тип машини" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Ціна, class: "form-label" %>
+          <%= f.number_field :cost, class: "form-control", placeholder: "Введіть ціну" %>
+        </div>
+
+        <div class="form-group mb-3">
+          <%= f.label :Зображення, class: "form-label" %>
+          <%= f.file_field :image, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group text-center mt-4">
+      <%= f.submit "Зберегти товар", class: "btn btn-dark" %>
+      <%= link_to 'Повернутися', :back, class: 'btn btn-outline-secondary'%>
+    </div>
+  </div>
+<% end %>

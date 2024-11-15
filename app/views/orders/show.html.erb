@@ -1,0 +1,59 @@
+<div class="container">
+  <h2 class="text-center mt-4 mb-4">Деталі замовлення</h2>
+  
+  <h3 class="mb-3">Дані про доставку</h3>
+  <table class="table table-bordered table-hover">
+    <tbody>
+      <tr>
+        <th class="table-dark">Дата замовлення</th>
+        <td><%= @order.created_at.strftime('%d-%m-%Y') %></td>
+      </tr>
+      <tr>
+        <th class="table-dark">Номер телефону</th>
+        <td><%= @order.phone %></td>
+      </tr>
+      <tr>
+        <th class="table-dark">Адреса доставки</th>
+        <td><%= @order.address %></td>
+      </tr>
+      <tr>
+        <th class="table-dark">Спосіб доставки</th>
+        <td><%= @order.delivery_method == "courier" ? "Кур'єр" : "Самовивіз" %></td>
+      </tr>
+      <tr>
+        <th class="table-dark">Спосіб оплати</th>
+        <td><%= @order.payment_method == "cash" ? "Оплата при отриманні" : "Онлайн оплата" %></td>
+      </tr>
+      <tr class="table-secondary">
+        <th>Загальна сума</th>
+        <td>$<%= @order.total_amount %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="mt-4 mb-3">Товари в замовленні</h3>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="table-dark">
+        <th>Товар</th>
+        <th>Кількість</th>
+        <th>Ціна</th>
+        <th>Сума</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= item.product.title %></td>
+          <td><%= item.quantity %></td>
+          <td>$<%= item.product.cost %></td>
+          <td>$<%= item.product.cost * item.quantity %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center mt-5 mb-5">
+  <%= link_to 'Повернутися до історії замовлень', orders_path, class: 'btn btn-dark' %>
+</div>

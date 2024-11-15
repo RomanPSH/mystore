@@ -1,0 +1,7 @@
+<%= turbo_stream.update "cart-items" do %>
+  <%= render partial: "cart_item", collection: @cart.cart_items, as: :cart_item %>
+<% end %>
+
+<%= turbo_stream.update "cart-counter" do %>
+  <%= @cart.cart_items.count %> <!-- оновлення лічильника товарів у кошику -->
+<% end %>

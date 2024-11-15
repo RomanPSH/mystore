@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Store" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-white d-flex flex-column" style="min-height: 100vh;">    
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: brown;">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+              <a class="nav-link" style="color: white; font-weight: bold;" href="<%= products_path %>">My Store</a>
+            </li>
+          </ul>
+
+          <form class="d-flex me-3" action="<%= products_path %>" method="get" role="search">
+            <div class="position-relative">
+              <input 
+                class="form-control" 
+                name="query" 
+                placeholder="Пошук" 
+                aria-label="Search" 
+                value="<%= params[:query] %>"
+              >
+              <% if params[:query].present? %>
+                <a href="<%= products_path %>" class="position-absolute top-50 end-0 translate-middle-y me-2">
+                  <i class="fas fa-times-circle" style="color: brown"></i>
+                </a>
+              <% end %>
+            </div>
+            <button class="btn btn-outline-light ms-2" type="submit">Пошук</button> <!-- Додано клас ms-2 для відступу -->
+          </form>
+
+          <% if user_signed_in? %>
+            <li class="nav-item dropdown" style="list-style-type: none">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white; font-weight: bold">
+                Дії
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Переглянути кошик", cart_path, class: "dropdown-item btn btn-outline-primary btn-sm" %></li>
+                <li><%= link_to 'Мої замовлення', orders_path, class: "dropdown-item btn btn-outline-primary btn-sm" %></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= link_to "Вийти", destroy_user_session_path, method: :delete, class: "dropdown-item btn btn-outline-primary btn-sm" %></li>
+              </ul>
+            </li>
+          <% else %>
+            <div class="d-flex align-items-center me-3">
+              <%= link_to "Ввійти", new_user_session_path, class: "btn btn-light btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container main flex-grow-1" style="padding-top: 80px; min-height: 90vh;">
+      <div class="row">
+        <div class="col-md-12">
+          <% flash.each do |name, message| %>
+            <div class="alert <%= bootstrap_class_for(name) %> alert-dismissible fade show position-fixed top-1 end-0 m-3" role="alert">
+              <%= message %>          
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%= yield %>
+    </div>
+    <% if show_footer? %>
+      <footer class="bg-dark text-white p-4 mt-5">
+        <div class="text-center">
+          <h4>Якщо у вас є питання, залиште своє ім'я, електронну пошту та повідомлення, і ми зв'яжемося з вами.</h4>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+
+            <%= form_with url: send_feedback_path, method: :post, local: true do %>
+              <div class="mb-3">
+                <%= label_tag :name, "Ім'я" %>
+                <%= text_field_tag :name, nil, class: 'form-control',  required: true %>
+              </div>
+              <div class="mb-3">
+                <%= label_tag :email, "Електронна пошта" %>
+                <%= email_field_tag :email, nil, class: 'form-control'%>
+              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3 d-flex flex-column align-end">
+              <%= label_tag :message, "Повідомлення" %>
+              <%= text_area_tag :message, nil, class: 'form-control', style: "height: 116px"%>
+            </div>
+            
+          </div>
+          
+        </div>
+          <div class="text-center">
+            <%= submit_tag 'Відправити', class: 'btn btn-light text-center' %>
+          <% end %> 
+          </div>
+        
+      </footer>
+    <% end %>
+
+  </body>
+</html>

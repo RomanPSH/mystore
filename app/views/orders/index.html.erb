@@ -1,0 +1,28 @@
+<h2 class="mt-4 mb-4 text-center">Історія замовлень</h2>
+
+<% if @orders.any? %>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="table-dark">
+        <th>Номер замовлення</th>
+        <th>Дата</th>
+        <th>Сума</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= order.created_at.strftime('%d-%m-%Y') %></td>
+          <td>$<%= order.total_amount %></td>
+          <td>
+            <%= link_to 'Переглянути', order_path(order), class: 'btn btn-dark' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>У вас немає жодного замовлення.</p>
+<% end %>

@@ -1,0 +1,53 @@
+<h1 class="text-center mt-4 mb-5">Кошик</h1>
+
+<% if @cart_items.present? %>
+  <div class="row">
+    <div class="col-lg-9 col-md-8 col-sm-12">
+      <% total_amount = 0 %>
+      <% @cart_items.each do |cart_item| %>
+        <% total_amount += cart_item.product.cost * cart_item.quantity %>
+        <div class="card shadow-sm p-2 mb-4">
+          <div class="row g-0 align-items-center">
+            <div class="col-4 col-sm-3 d-flex align-items-center justify-content-center">
+              <%= link_to product_path(cart_item.product) do %>
+                <%= image_tag cart_item.product.image.url, class: 'img-fluid rounded-start', alt: cart_item.product.title, style: 'max-height: 80px; object-fit: contain;' %>
+              <% end %>
+            </div>
+
+            <div class="col-5 col-sm-6">
+              <div class="card-body p-0">
+                <h5 class="card-title mb-1" style="font-size: 16px;">
+                  <%= link_to cart_item.product.title, product_path(cart_item.product), class: 'text-decoration-none' %>
+                </h5>
+                <p class="card-text text-muted mb-1" style="font-size: 14px;">Ціна: $<%= cart_item.product.cost %></p>
+                <div class="d-flex align-items-center mt-1">
+                  <div class="d-flex" style="width: 100px;">
+                    <%= link_to '-', decrease_quantity_cart_path(product_id: cart_item.product_id), method: :post, class: 'btn btn-sm btn-danger me-1' %>
+                    <span class="d-flex justify-content-center align-items-center px-2 border" style="font-size: 14px;"><%= cart_item.quantity %></span>
+                    <%= link_to '+', increase_quantity_cart_path(product_id: cart_item.product_id), method: :post, class: 'btn btn-sm btn-dark ms-1' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-3 col-sm-3 d-flex flex-column align-items-end">
+              <%= link_to 'Видалити', remove_from_cart_path(product_id: cart_item.product_id), method: :post, class: 'btn btn-sm btn-outline-danger mb-2' %>
+              <p class="card-text fw-bold" style="font-size: 16px;">Сума: $<%= cart_item.product.cost * cart_item.quantity %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-12 mt-4 mt-md-0">
+      <div class="sticky-top" style="top: 70px;">
+        <div class="bg-light p-3 mb-3 text-center rounded shadow-sm">
+          <p class="fw-bold mb-2" style="font-size: 18px;">Загальна сума: $<%= total_amount %></p>
+          <%= link_to 'Оформити замовлення', new_order_path, class: 'btn btn-dark w-100' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <p>Ваш кошик порожній.</p>
+<% end %>
