@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
-gem 'carrierwave', '~> 3.0', '>= 3.0.7'
+gem 'carrierwave', '~> 3.1'
 gem 'mini_magick', '~> 4.13', '>= 4.13.2'
 gem 'bootstrap', '~> 5.3', '>= 5.3.3'
 gem 'rails-assets-tether', '~> 1.1', '>= 1.1.1'
